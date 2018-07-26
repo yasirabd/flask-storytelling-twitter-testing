@@ -1,0 +1,54 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}
+{{ _('Storytelling Twitter') }}
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ _('Storytelling Twitter') }}</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
+        <li><a href="{{ url_for('main.stories') }}">{{ _('Stories') }}</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3>Pilih Story</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table table-stripped">
+        <thead>
+          <th>No</th>
+          <th>Waktu</th>
+          <th>Action</th>
+        </thead>
+        {% set ns = namespace(i=1) %}
+        {% for item in crawler %}
+        <tbody>
+          <tr>
+            <td>{{ ns.i }}</td>
+            <td>{{ item.timestamp }}</td>
+            <td><a class="btn btn-primary" href="{{ url_for('main.story', id=item.id)}}">Lihat Story</a></td>
+          </tr>
+          {% set ns.i = ns.i+1 %}
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
