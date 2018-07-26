@@ -2,8 +2,12 @@
 
 {% block app_content %}
 <div class="row">
-  <h3>Data Tweet <span><a href="{{ url_for('main.stories' )}}" class="btn btn-danger btn-sm"><i class='fa fa-cog'></i> Do Process</a></span></h3>
-  <hr>
+  <div class="col-md-12">
+    <h3>Data Tweet <span><a href="{{ url_for('main.stories' )}}" class="btn btn-danger btn-sm"><i class='fa fa-cog'></i> Do Process</a></span></h3>
+  </div>
+</div>
+<hr>
+<div class="row">
   <div class="col-md-12">
     <table class="table table-stripped" id="tableTweet">
       <thead>
