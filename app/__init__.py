@@ -60,4 +60,4 @@ def create_app(config_class=Config):
 
     return app
 
-# from app import models
+from app import models
