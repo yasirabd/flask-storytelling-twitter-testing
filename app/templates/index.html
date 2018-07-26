@@ -1,5 +1,44 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-Content
+<div class="row">
+  <h3>Data Tweet <span><a href="{{ url_for('main.stories' )}}" class="btn btn-danger btn-sm"><i class='fa fa-cog'></i> Do Process</a></span></h3>
+  <hr>
+  <div class="col-md-12">
+    <table class="table table-stripped" id="tableTweet">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Username</th>
+          <th>Created</th>
+          <th>Text</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set ns = namespace(i=1) %}
+        {% for item in tweets %}
+        <tr>
+          <td>{{ ns.i }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.created }}</td>
+          <td>{{ item.text }}</td>
+          <td>{{ item.latitude }}</td>
+          <td>{{ item.longitude }}</td>
+        </tr>
+        {% set ns.i = ns.i+1 %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('#tableTweet').DataTable();
+});
+</script>
 {% endblock %}
