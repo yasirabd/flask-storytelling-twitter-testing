@@ -1,37 +1,5 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-<div id="loading"></div>
-<div id="content">
-  {% if form_splace %}
-  <div style="margin-bottom: 20px;">
-    {{ wtf.quick_form(form_splace, form_type="inline", action="attractions", button_map={'search_place':'default'}) }}
-  </div>
-  {% endif %}
-  {% if form_stweets %}
-  <div class="row">
-    <div class="col-md-4">
-      <form method="post" action="{{ url_for('main.process') }}">
-        {{ form_stweets.hidden_tag() }}
-        <div class="form-group pre-scrollable" style="max-height: 42vh;">
-          {{ render_mutiple_checkbox_field(form_stweets.multi_attractions) }}
-        </div>
-        <div class="form-group">
-          {{ render_field(form_stweets.range_dist, class="form-control") }}
-        </div>
-        <div class="form-group">
-          {{ render_field(form_stweets.days_before, class="form-control") }}
-        </div>
-        <button class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#demo-modal-2">
-          Get Stories
-        </button>
-      </form>
-    </div>
-    <div class="col-md-8">
-      {% include '_maps.html' %}
-    </div>
-  </div>
-  {% endif %}
-</div>
+Content
 {% endblock %}

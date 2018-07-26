@@ -3,7 +3,6 @@ from logging.handlers import RotatingFileHandler
 import os
 from flask import Flask, current_app
 from flask_bootstrap import Bootstrap
-from flask_babel import Babel
 from flask_googlemaps import GoogleMaps
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
@@ -22,7 +21,6 @@ naming_convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 bootstrap = Bootstrap()
-babel = Babel()
 googlemaps = GoogleMaps()
 
 
@@ -38,7 +36,6 @@ def create_app(config_class=Config):
         else:
             migrate.init_app(app, db)
     bootstrap.init_app(app)
-    babel.init_app(app)
     googlemaps.init_app(app)
 
     from app.errors import bp as errors_bp
@@ -63,5 +60,4 @@ def create_app(config_class=Config):
 
     return app
 
-
-from app import models
+# from app import models
