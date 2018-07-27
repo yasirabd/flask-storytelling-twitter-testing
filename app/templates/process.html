@@ -1,0 +1,143 @@
+{% extends "bootstrap/base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+Storytelling Twitter
+{% endblock %}
+
+{% block head %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='process.css')}}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bootstrap-slider.min.css')}}">
+<script type="text/javascript" src="{{url_for('static', filename='bootstrap-slider.min.js')}}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapseToggle" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">Storytelling Twitter</a>
+    </div>
+    <div class="collapse navbar-collapse" role="navigation" id="collapseToggle">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <nav class="col-md-3" id="myScrollspy">
+      <ol class="nav nav-stacked" id="sidebar" data-spy="affix" data-offset-top=0>
+        <h3>Steps</h3>
+        <li><a href="#crawling">1. Observe Data <span id="stat_observe_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#preprocessing">2. Preprocessing <span id="stat_preprocessing_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#tagging">3. POS Tagging <span id="stat_pos_tagging_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#penentuan_kelas">4. Penentuan Kelas <span id="stat_penentuan_kelas_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#lda">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#grammar">6. Grammar Story <span id="stat_grammar_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#final">7. Final Result <span id="stat_final_sidebar" class="text-danger">(Belum)</span></a></li>
+      </ol>
+    </nav>
+    <div class="col-md-9">
+      <hr>
+      <h2 id="crawling" class="anchor">1. Observe Data <span id="stat_observe_header" class="text-danger">(Belum)</span></h2>
+      Data tweet yang akan diproses:
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="code">Place</td>
+            <td class="code">Semarang</td>
+          </tr>
+          <tr>
+            <td class="code">Attractions</td>
+            <td class="code">Lawang Sewu</td>
+          </tr>
+          <tr>
+            <td class="code">Number of tweets</td>
+            <td class="code">15 tweets</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Beri nama <i>project</i> tes uji berikut:</p>
+      <form method="post" action="{{ url_for('main.test') }}" role="form" id="formtest">
+        <div class="form-group">
+          <label for="project_name">Project Name</label>
+          <input type="text" class="form-control" id="project_name" placeholder="Masukkan nama project" name="project_name">
+        </div>
+        <button type="submit" id="btnObserve" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Menyimpan..">Save</button>
+      </form>
+      <p class="code"><small><span id="status_observe"></span></small></p>
+      <hr>
+      <h2 id="preprocessing" class="anchor">2. Preprocessing <span id="stat_preprocessing_header" class="text-danger">(Belum)</span></h2>
+
+      <hr>
+      <h2 id="tagging" class="anchor">3. POS Tagging <span id="stat_pos_tagging_header" class="text-danger">(Belum)</span></h2>
+
+      <hr>
+      <h2 id="penentuan_kelas" class="anchor">4. Penentuan Kelas <span id="stat_penentuan_kelas_header" class="text-danger">(Belum)</span></h2>
+
+      <hr>
+      <h2 id="lda" class="anchor">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_header" class="text-danger">(Belum)</span></h2>
+
+      <hr>
+      <h2 id="grammar" class="anchor">6. Grammar Story <span id="stat_grammar_header" class="text-danger">(Belum)</h2>
+
+      <hr>
+      <h2 id="final" class="anchor">7. Final Result <span id="stat_final_header" class="text-danger">(Belum)</h2>
+
+      <hr>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+// javascript for submit project name
+function gantiStatusObserve() {
+  var stat_observe_sidebar =  document.getElementById("stat_observe_sidebar");
+  var stat_observe_header = document.getElementById("stat_observe_header");
+  stat_observe_sidebar.innerHTML = "(Sudah)";
+  stat_observe_sidebar.style.color = "green";
+  stat_observe_header.innerHTML = "(Sudah)";
+  stat_observe_header.style.color = "green";
+}
+function doObserve(ev){
+  ev.preventDefault()
+  $("#btnObserve").button('loading');
+  $.ajax({
+    type: "POST",
+    url: $(this).attr('action'),
+    data: $(this).serialize(),
+  }).done(doObserveShow);
+}
+function doObserveShow(data) {
+  $('#status_observe').text(data.status_observe);
+  $('#project_name').val('');
+  gantiStatusObserve();
+  $("#btnObserve").button('reset');
+}
+$('#formtest').submit(doObserve);
+</script>
+{% endblock %}

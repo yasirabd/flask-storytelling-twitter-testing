@@ -1,0 +1,33 @@
+body {
+	padding-top:50px;
+}
+
+.navbar-bright {
+	background-color:#111155;
+    color:#fff;
+}
+
+.navbar-bright a {
+  	color:#aaaacc;
+}
+
+.navbar-bright li > a:hover {
+    background-color:#000033;
+}
+
+.affix-top,.affix{
+	position: static;
+}
+
+.anchor {
+  padding-top: 75px;
+  margin-top: -75px;
+}
+
+.code {
+  font-family: 'Roboto Mono';
+}
+
+.slider {
+    width: 70% !important;
+}
