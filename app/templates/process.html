@@ -45,7 +45,7 @@ Storytelling Twitter
       <ol class="nav nav-stacked" id="sidebar" data-spy="affix" data-offset-top=0>
         <h3>Steps</h3>
         <li><a href="#crawling">1. Observe Data <span id="stat_observe_sidebar" class="text-danger">(Belum)</span></a></li>
-        <li><a href="#preprocessing">2. Preprocessing <span id="stat_preprocessing_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#preprocessing">2. Preprocessing <span style="display:none" id="stat_preprocessing_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#tagging">3. POS Tagging <span id="stat_pos_tagging_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#penentuan_kelas">4. Penentuan Kelas <span id="stat_penentuan_kelas_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#lda">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_sidebar" class="text-danger">(Belum)</span></a></li>
@@ -89,8 +89,33 @@ Storytelling Twitter
       </form>
       <p class="code"><small><span id="status_observe"></span></small></p>
       <hr>
-      <h2 id="preprocessing" class="anchor">2. Preprocessing <span id="stat_preprocessing_header" class="text-danger">(Belum)</span></h2>
-
+      <h2 id="preprocessing" class="anchor">2. Preprocessing <span style="display:none" id="stat_preprocessing_header" class="text-danger">(Belum)</span></h2>
+      <p>
+        Pada <i>preprocessing</i> tweet dilakukan hal berikut:
+        <ol class="list-group">
+          <li class="list-group-item">
+            <h4>Common Preprocessing</h4>
+            <ul>
+              <li>Remove ASCII and Unicode</li>
+              <li>Tokenization <code>Saya makan -> 'Saya', 'makan'</code></li>
+              <li>Case folding, convert into lowercase <code>Saya -> saya</code></li>
+              <li>Remove punctuation <code>!?%^., etc</code></li>
+              <li>Remove newline</li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <h4>Specific Preprocessing</h4>
+            <ul>
+              <li>Remove special symbols on Twitter <code>hashtag(#), mention(@username), RT, and FAV</code></li>
+              <li>Remove all emoticons</li>
+              <li>Remove URL</li>
+              <li>Spelling checker using <i>symspell</i></li>
+            </ul>
+          </li>
+        </ol>
+        <button type="button" style="display: none;" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Proses Preprocessing" id="btnPreprocessing">Lakukan Preprocessing</button>
+        <p class="code"><small><span id="status_preprocessing"></span></small></p>
+      </p>
       <hr>
       <h2 id="tagging" class="anchor">3. POS Tagging <span id="stat_pos_tagging_header" class="text-danger">(Belum)</span></h2>
 
@@ -139,5 +164,34 @@ function doObserveShow(data) {
   $("#btnObserve").button('reset');
 }
 $('#formtest').submit(doObserve);
+
+// javascript for preprocessing
+function gantiStatusPreprocessing() {
+  var stat_preprocessing_sidebar =  document.getElementById("stat_preprocessing_sidebar");
+  var stat_preprocessing_header = document.getElementById("stat_preprocessing_header");
+  stat_preprocessing_sidebar.innerHTML = "(Sudah)";
+  stat_preprocessing_sidebar.style.color = "green";
+  stat_preprocessing_header.innerHTML = "(Sudah)";
+  stat_preprocessing_header.style.color = "green";
+}
+function doPreprocessing(ev){
+  ev.preventDefault();
+  $("#btnPreprocessing").button('loading');
+  $.ajax({
+    method: 'POST',
+    url: {{ url_for('main.preprocess')|tojson }},
+    timeout: 0,
+    data: $(this).serialize(),
+  }).done(doPreprocessingShow);
+}
+function doPreprocessingShow(data) {
+  $('#status_preprocessing').text(data.status_preprocessing);
+  gantiStatusPreprocessing();
+  $("#btnPreprocessing").button('reset');
+  setTimeout(function () {
+    $("#btnPreprocessing").prop("disabled", true);
+  }, 0);
+}
+$('#btnPreprocessing').click(doPreprocessing)
 </script>
 {% endblock %}

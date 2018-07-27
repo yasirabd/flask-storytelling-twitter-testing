@@ -10,6 +10,7 @@ class Tweet(db.Model):
     text = db.Column(db.String(200))
     latitude = db.Column(db.Text)
     longitude = db.Column(db.Text)
+    preprocess = db.relationship('Preprocess', backref='tweet', uselist=False)
 
     def __repr__(self):
         return '<Tweet {}>'.format(self.username)
@@ -22,3 +23,13 @@ class Test(db.Model):
 
     def __repr__(self):
         return '<Test {}>'.format(self.name)
+
+
+class Preprocess(db.Model):
+    __tablename__ = 'preprocess'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(200))
+    tweet_id = db.Column(db.Integer, db.ForeignKey('tweet.id'), nullable=False)
+
+    def __repr__(self):
+        return '<Preprocess {}>'.format(self.text)
