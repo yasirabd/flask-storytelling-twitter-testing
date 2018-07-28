@@ -47,11 +47,11 @@ Storytelling Twitter
         <select class="form-control" id="selectTopic" name="selectTopic">
           {% for t in topic %}
           <option value="" selected disabled hidden>Choose a topic</option>
-          <option value="{{ t }}">{{ t }}</option>
+          <option value="{{t}}">{{ t }}</option>
           {% endfor %}
         </select>
       </div>
-      <a href="" class="btn btn-primary btn-block"><i class="fa fa-info-circle"></i> Details</a>
+      <a href="{{url_for('main.get_data', id=test_id)}}" class="btn btn-primary btn-block"><i class="fa fa-info-circle"></i> Details</a>
       <button class="btn btn-success btn-block"><i class="fa fa-download"></i> Export All Story</button>
     </div>
     <div class="col-md-10">

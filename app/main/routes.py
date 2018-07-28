@@ -317,3 +317,45 @@ def get_story(id):
         result.append(data.sentence)
 
     return jsonify(grammar_story='. '.join(i.capitalize() for i in result))
+
+
+@bp.route('/stories/<int:id>/details/data', methods=['GET', 'POST'])
+def get_data(id):
+    tweets = Tweet.query.all()
+
+    return render_template("details_data.html", test_id=id, tweets=tweets)
+
+
+@bp.route('/stories/<int:id>/details/preprocessing', methods=['GET', 'POST'])
+def get_preprocessing(id):
+    preprocess = Preprocess.query.all()
+
+    return render_template("details_preprocessing.html", test_id=id, preprocess=preprocess)
+
+
+@bp.route('/stories/<int:id>/details/postag', methods=['GET', 'POST'])
+def get_postag(id):
+    postag = PosTag.query.all()
+
+    return render_template("details_postag.html", test_id=id, postag=postag)
+
+
+@bp.route('/stories/<int:id>/details/kelas', methods=['GET', 'POST'])
+def get_kelas(id):
+    kelas = PenentuanKelas.query.all()
+
+    return render_template("details_kelas.html", test_id=id, kelas=kelas)
+
+
+@bp.route('/stories/<int:id>/details/lda', methods=['GET', 'POST'])
+def get_lda(id):
+    lda = LdaPWZ.query.filter_by(test_id=id)
+
+    return render_template("details_lda.html", test_id=id, lda=lda)
+
+
+@bp.route('/stories/<int:id>/details/story', methods=['GET', 'POST'])
+def get_grammar_story(id):
+    story = GrammarStory.query.filter_by(test_id=id)
+
+    return render_template("details_story.html", test_id=id, story=story)
