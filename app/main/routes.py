@@ -2,9 +2,10 @@ from app import db
 from flask import current_app, render_template, request, jsonify
 import os
 from app.main import bp
-from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas
+from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas, LdaPWZ
 from ..modules.preprocess import Normalize, Tokenize, SymSpell
 from ..modules.hmmtagger import MainTagger, Tokenization
+from ..modules.lda import LdaModel
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -210,3 +211,49 @@ def penentuan_kelas():
         db.session.commit()
 
     return jsonify(status_penentuan_kelas="success")
+
+
+@bp.route('/process/lda', methods=['GET', 'POST'])
+def lda():
+    latest_test_id = (Test.query.order_by(Test.id.desc()).first()).id
+    tweets_penentuan_kelas = PenentuanKelas.query.all()
+
+    # get tweets content
+    tweets_content_tagged = []
+    for tweet in tweets_penentuan_kelas:
+        tweets_content_tagged.append(tweet.content)
+
+    # separate word and tag
+    documents = []
+    for tweet in tweets_content_tagged:
+        tweet_split = tweet.split(' ')
+        temp = []
+        for word in tweet_split:
+            w = word.split("/", 1)[0]
+            temp.append(w)
+        documents.append(temp)
+
+    num_topics = request.form['num_topics']
+    alpha = request.form['alpha']
+    beta = request.form['beta']
+    iterations = request.form['iterations']
+
+    if num_topics and alpha and beta and iterations:
+        lda = LdaModel(documents, int(num_topics), float(alpha), float(beta), int(iterations))
+        result = lda.get_topic_word_pwz(tweets_content_tagged)
+
+        # insert into table ldapwz
+        for r in result:
+            topic, word, pwz = r[0], r[1], r[2]
+
+            tb_ldapwz = LdaPWZ()
+            tb_ldapwz.topic = topic
+            tb_ldapwz.word = word
+            tb_ldapwz.pwz = pwz
+            tb_ldapwz.test_id = latest_test_id
+            db.session.add(tb_ldapwz)
+            db.session.commit()
+
+        return jsonify(status_lda="success")
+    else:
+        return jsonify(status_lda="failed")

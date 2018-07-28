@@ -12,9 +12,9 @@ Storytelling Twitter
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel='stylesheet'>
 <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bootstrap-slider.min.css')}}">
-<script type="text/javascript" src="{{url_for('static', filename='bootstrap-slider.min.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='bootstrap-slider.min.js')}}"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -437,7 +437,41 @@ Storytelling Twitter
       </p>
       <hr>
       <h2 id="lda" class="anchor">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_header" class="text-danger">(Belum)</span></h2>
-
+      <p>
+        <i>Latent Dirichlet Allocation </i>(LDA) adalah <i>generative probabilistic model</i> dari kumpulan dokumen yang berisi kata-kata.
+        <form class="form-horizontal" method="post" action="{{ url_for('main.lda') }}" role="form" id="formLda">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Jumlah Topik</label>
+            <div class="col-sm-10 form-inline">
+              <input type="number" id="num_topics" name="num_topics" class="form-control" value="2" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Alpha</label>
+            <div class="col-sm-10 form-inline">
+              <input id="alpha" name="alpha" type="number" class="form-control" value="0.1" min="0" max="1" step="0.001" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Beta</label>
+            <div class="col-sm-10 form-inline">
+              <input id="beta" name="beta" type="number" class="form-control" value="0.1" min="0" max="1" step="0.001" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Iterations</label>
+            <div class="col-sm-10 form-inline">
+                <input type="number" id="iterations" name="iterations" class="form-control" value="1000"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" id="btnLda" name="btnLda" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Proses LDA">Lakukan Proses LDA</button>
+            </div>
+          </div>
+        </form>
+        <p class="code"><small><span id="status_lda"></span></small></p>
+      </p>
       <hr>
       <h2 id="grammar" class="anchor">6. Grammar Story <span id="stat_grammar_header" class="text-danger">(Belum)</h2>
 
@@ -564,5 +598,33 @@ function doPenentuanKelasShow(data) {
   }, 0);
 }
 $('#btnPenentuanKelas').click(doPenentuanKelas)
+
+// javascript for submit form LDA
+function gantiStatusLda() {
+  var stat_lda_sidebar =  document.getElementById("stat_lda_sidebar");
+  var stat_lda_header = document.getElementById("stat_lda_header");
+  stat_lda_sidebar.innerHTML = "(Sudah)";
+  stat_lda_sidebar.style.color = "green";
+  stat_lda_header.innerHTML = "(Sudah)";
+  stat_lda_header.style.color = "green";
+}
+function doLDA(ev){
+  ev.preventDefault()
+  $("#btnLda").button('loading');
+  $.ajax({
+    type: "POST",
+    url: $(this).attr('action'),
+    data: $(this).serialize(),
+  }).done(doLDAShow);
+}
+function doLDAShow(data) {
+  $('#status_lda').text(data.status_lda);
+  gantiStatusLda();
+  $("#btnLda").button('reset');
+  setTimeout(function () {
+    $("#btnLda").prop("disabled", true);
+  }, 0);
+}
+$('#formLda').submit(doLDA);
 </script>
 {% endblock %}

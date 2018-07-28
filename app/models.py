@@ -22,6 +22,7 @@ class Test(db.Model):
     __tablename__ = 'test'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+    ldapwz = db.relationship('LdaPWZ', backref='test', lazy='dynamic')
 
     def __repr__(self):
         return '<Test {}>'.format(self.name)
@@ -56,3 +57,15 @@ class PenentuanKelas(db.Model):
 
     def __repr__(self):
         return '<PenentuanKelas {} {}>'.format(self.content, self.function)
+
+
+class LdaPWZ(db.Model):
+    __tablename__ = 'ldapwz'
+    id = db.Column(db.Integer, primary_key=True)
+    word = db.Column(db.String(200))
+    topic = db.Column(db.Integer)
+    pwz = db.Column(db.String(200))
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
+
+    def __repr__(self):
+        return '<LdaPWZ {} {} {}>'.format(self.word, self.topic, self.pwz)
