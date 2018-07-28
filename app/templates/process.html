@@ -46,7 +46,7 @@ Storytelling Twitter
         <h3>Steps</h3>
         <li><a href="#crawling">1. Observe Data <span id="stat_observe_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#preprocessing">2. Preprocessing <span style="display:none" id="stat_preprocessing_sidebar" class="text-danger">(Belum)</span></a></li>
-        <li><a href="#tagging">3. POS Tagging <span id="stat_pos_tagging_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#tagging">3. POS Tagging <span style="display: none;" id="stat_pos_tagging_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#penentuan_kelas">4. Penentuan Kelas <span id="stat_penentuan_kelas_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#lda">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#grammar">6. Grammar Story <span id="stat_grammar_sidebar" class="text-danger">(Belum)</span></a></li>
@@ -56,38 +56,40 @@ Storytelling Twitter
     <div class="col-md-9">
       <hr>
       <h2 id="crawling" class="anchor">1. Observe Data <span id="stat_observe_header" class="text-danger">(Belum)</span></h2>
-      Data tweet yang akan diproses:
-      <table class="table table-stripped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="code">Place</td>
-            <td class="code">Semarang</td>
-          </tr>
-          <tr>
-            <td class="code">Attractions</td>
-            <td class="code">Lawang Sewu</td>
-          </tr>
-          <tr>
-            <td class="code">Number of tweets</td>
-            <td class="code">15 tweets</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>Beri nama <i>project</i> tes uji berikut:</p>
-      <form method="post" action="{{ url_for('main.test') }}" role="form" id="formtest">
-        <div class="form-group">
-          <label for="project_name">Project Name</label>
-          <input type="text" class="form-control" id="project_name" placeholder="Masukkan nama project" name="project_name">
-        </div>
-        <button type="submit" id="btnObserve" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Menyimpan..">Save</button>
-      </form>
-      <p class="code"><small><span id="status_observe"></span></small></p>
+      <p>
+        Data tweet yang akan diproses:
+        <table class="table table-stripped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">Place</td>
+              <td class="code">Semarang</td>
+            </tr>
+            <tr>
+              <td class="code">Attractions</td>
+              <td class="code">Lawang Sewu</td>
+            </tr>
+            <tr>
+              <td class="code">Number of tweets</td>
+              <td class="code">15 tweets</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Beri nama <i>project</i> tes uji berikut:</p>
+        <form method="post" action="{{ url_for('main.test') }}" role="form" id="formtest">
+          <div class="form-group">
+            <label for="project_name">Project Name</label>
+            <input type="text" class="form-control" id="project_name" placeholder="Masukkan nama project" name="project_name">
+          </div>
+          <button type="submit" id="btnObserve" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Menyimpan..">Save</button>
+        </form>
+        <p class="code"><small><span id="status_observe"></span></small></p>
+      </p>
       <hr>
       <h2 id="preprocessing" class="anchor">2. Preprocessing <span style="display:none" id="stat_preprocessing_header" class="text-danger">(Belum)</span></h2>
       <p>
@@ -117,8 +119,253 @@ Storytelling Twitter
         <p class="code"><small><span id="status_preprocessing"></span></small></p>
       </p>
       <hr>
-      <h2 id="tagging" class="anchor">3. POS Tagging <span id="stat_pos_tagging_header" class="text-danger">(Belum)</span></h2>
+      <h2 id="tagging" class="anchor">3. POS Tagging <span style="display: none;" id="stat_pos_tagging_header" class="text-danger">(Belum)</span></h2>
+      <p>
+        <i>Part-of-Speech</i> Tagging adalah proses memberi tag part-of-speech pada kata dalam kalimat. Berikut adalah contohnya:<br />
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Kalimat</th>
+              <th>Setelah POS Tagging</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>saya suka memakan bakso 5 buah.</td>
+              <td>saya<code>/PRP</code> suka<code>/VBI</code> memakan<code>/VBT</code> bakso<code>/NN</code> 5<code>/CDP</code> buah<code>/NN</code> .<code>/.</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="text-align:justify">Pada proses tagging kata pada kalimat, menggunakan <b>HMM POS Tagger</b> berdasarkan <i>"Alfan Farizki Wicaksono, Ayu Purwarianti.
+        HMM Based POS Tagger for Bahasa Indonesia. On Proceedings of 4th International MALINDO (Malay - Indonesian Language) Workshop. 2nd August 2010."</i></p>
+        <p>Berikut adalah tabel pos tagging:</p>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>POS</th>
+              <th>POS Name</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>OP</td>
+              <td>Open Parenthesis</td>
+              <td>({[</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>CP</td>
+              <td>Close Parenthesis</td>
+              <td>)}]</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>GM</td>
+              <td>Slash</td>
+              <td>/</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>;</td>
+              <td>Semicolon</td>
+              <td>;</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>:</td>
+              <td>Colon</td>
+              <td>:</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>"</td>
+              <td>Quotation</td>
+              <td>" '</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>.</td>
+              <td>Sentence Terminator</td>
+              <td>.!?</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>,</td>
+              <td>Comma</td>
+              <td>,</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>-</td>
+              <td>Dash</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>...</td>
+              <td>Ellipsis</td>
+              <td>...</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>JJ</td>
+              <td>Adjective</td>
+              <td>Kaya, Manis</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>RB</td>
+              <td>Adverb</td>
+              <td>Sementara, Nanti</td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>NN</td>
+              <td>Common Noun</td>
+              <td>Mobil</td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>NNP</td>
+              <td>Proper Noun</td>
+              <td>Bekasi, Indonesia</td>
+            </tr>
+            <tr>
+              <td>15</td>
+              <td>NNG</td>
+              <td>Genitive Noun</td>
+              <td>Bukunya</td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>VBI</td>
+              <td>Intransitive Verb</td>
+              <td>Pergi</td>
+            </tr>
+            <tr>
+              <td>17</td>
+              <td>VBT</td>
+              <td>Transitive Verb</td>
+              <td>Membeli</td>
+            </tr>
+            <tr>
+              <td>18</td>
+              <td>IN</td>
+              <td>Preposition</td>
+              <td>Di, Ke, Dari</td>
+            </tr>
+            <tr>
+              <td>19</td>
+              <td>MD</td>
+              <td>Modal</td>
+              <td>Bisa</td>
+            </tr>
+            <tr>
+              <td>20</td>
+              <td>CC</td>
+              <td>Coor-Conjunction</td>
+              <td>Dan, Atau, Tetapi</td>
+            </tr>
+            <tr>
+              <td>21</td>
+              <td>SC</td>
+              <td>Subor-Conjunction</td>
+              <td>Jika, Ketika</td>
+            </tr>
+            <tr>
+              <td>22</td>
+              <td>DT</td>
+              <td>Determiner</td>
+              <td>Para, Ini, Itu</td>
+            </tr>
+            <tr>
+              <td>23</td>
+              <td>UH</td>
+              <td>Interjection</td>
+              <td>Wah, Aduh, Oi</td>
+            </tr>
+            <tr>
+              <td>24</td>
+              <td>CDO</td>
+              <td>Ordinal Numerals</td>
+              <td>Pertama, Kedua</td>
+            </tr>
+            <tr>
+              <td>25</td>
+              <td>CDC</td>
+              <td>Collective Numerals</td>
+              <td>Bertiga</td>
+            </tr>
+            <tr>
+              <td>26</td>
+              <td>CDP</td>
+              <td>Primary Numerals</td>
+              <td>Satu, Dua</td>
+            </tr>
+            <tr>
+              <td>27</td>
+              <td>CDI</td>
+              <td>Irregular Numerals</td>
+              <td>Beberapa</td>
+            </tr>
+            <tr>
+              <td>28</td>
+              <td>PRP</td>
+              <td>Personal Pronouns</td>
+              <td>Saya, Kamu</td>
+            </tr>
+            <tr>
+              <td>29</td>
+              <td>WP</td>
+              <td>WH-Pronouns</td>
+              <td>Apa, Siapa</td>
+            </tr>
+            <tr>
+              <td>30</td>
+              <td>PRN</td>
+              <td>Number Pronouns</td>
+              <td>Kedua-duanya</td>
+            </tr>
+            <tr>
+              <td>31</td>
+              <td>PRL</td>
+              <td>Locative Pronouns</td>
+              <td>Sini, Situ, Sana</td>
+            </tr>
+            <tr>
+              <td>32</td>
+              <td>NEG</td>
+              <td>Negation</td>
+              <td>Bukan, Tidak</td>
+            </tr>
+            <tr>
+              <td>33</td>
+              <td>SYM</td>
+              <td>Symbols</td>
+              <td>@#$%^&</td>
+            </tr>
+            <tr>
+              <td>34</td>
+              <td>RP</td>
+              <td>Particles</td>
+              <td>Pun, Kah</td>
+            </tr>
+            <tr>
+              <td>35</td>
+              <td>FW</td>
+              <td>Foreign Words</td>
+              <td>Foreign, Word
 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button style="display: none;" type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Proses POS Tagging" id="btnPosTagging">Lakukan POS Tagging</button>
+        <p class="code"><small><span id="status_pos_tagging"></span></small></p>
+      </p>
       <hr>
       <h2 id="penentuan_kelas" class="anchor">4. Penentuan Kelas <span id="stat_penentuan_kelas_header" class="text-danger">(Belum)</span></h2>
 
@@ -193,5 +440,34 @@ function doPreprocessingShow(data) {
   }, 0);
 }
 $('#btnPreprocessing').click(doPreprocessing)
+
+// javascript for pos tagging
+function gantiStatusPosTagging() {
+  var stat_pos_tagging_sidebar =  document.getElementById("stat_pos_tagging_sidebar");
+  var stat_pos_tagging_header = document.getElementById("stat_pos_tagging_header");
+  stat_pos_tagging_sidebar.innerHTML = "(Sudah)";
+  stat_pos_tagging_sidebar.style.color = "green";
+  stat_pos_tagging_header.innerHTML = "(Sudah)";
+  stat_pos_tagging_header.style.color = "green";
+}
+function doPosTagging(ev){
+  ev.preventDefault();
+  $("#btnPosTagging").button('loading');
+  $.ajax({
+    method: 'POST',
+    url: {{ url_for('main.pos_tagging')|tojson }},
+    timeout: 0,
+    data: $(this).serialize(),
+  }).done(doPosTaggingShow);
+}
+function doPosTaggingShow(data) {
+  $('#status_pos_tagging').text(data.status_pos_tagging);
+  gantiStatusPosTagging();
+  $("#btnPosTagging").button('reset');
+  setTimeout(function () {
+    $("#btnPosTagging").prop("disabled", true);
+  }, 0);
+}
+$('#btnPosTagging').click(doPosTagging)
 </script>
 {% endblock %}

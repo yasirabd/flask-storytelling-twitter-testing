@@ -11,6 +11,7 @@ class Tweet(db.Model):
     latitude = db.Column(db.Text)
     longitude = db.Column(db.Text)
     preprocess = db.relationship('Preprocess', backref='tweet', uselist=False)
+    postag = db.relationship('PosTag', backref='tweet', uselist=False)
 
     def __repr__(self):
         return '<Tweet {}>'.format(self.username)
@@ -33,3 +34,13 @@ class Preprocess(db.Model):
 
     def __repr__(self):
         return '<Preprocess {}>'.format(self.text)
+
+
+class PosTag(db.Model):
+    __tablename__ = 'postag'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(200))
+    tweet_id = db.Column(db.Integer, db.ForeignKey('tweet.id'), nullable=False)
+
+    def __repr__(self):
+        return '<PosTag {}>'.format(self.text)

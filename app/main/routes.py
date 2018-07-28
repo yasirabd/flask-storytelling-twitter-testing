@@ -2,8 +2,9 @@ from app import db
 from flask import current_app, render_template, request, jsonify
 import os
 from app.main import bp
-from app.models import Tweet, Test, Preprocess
+from app.models import Tweet, Test, Preprocess, PosTag
 from ..modules.preprocess import Normalize, Tokenize, SymSpell
+from ..modules.hmmtagger import MainTagger, Tokenization
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -101,3 +102,53 @@ def preprocess():
         db.session.commit()
 
     return jsonify(status_preprocessing="success")
+
+
+@bp.route('/process/pos_tagging', methods=['GET', 'POST'])
+def pos_tagging():
+    tweets_preprocessed = Preprocess.query.all()
+
+    # get text from table Preprocess
+    list_tweets = []
+    for t in tweets_preprocessed:
+        tid_tweet = [t.tweet_id, t.text]
+        list_tweets.append(tid_tweet)
+
+    # path
+    SITE_ROOT = os.path.abspath(os.path.dirname(__file__))
+    lexicon_url = os.path.join(SITE_ROOT, "..\data", "Lexicon.trn")
+    ngram_url = os.path.join(SITE_ROOT, "..\data", "Ngram.trn")
+
+    # initialize
+    tagger = MainTagger(lexicon_url, ngram_url, 0, 3, 3, 0, 0, False, 0.2, 0, 500.0, 1)
+    tokenize = Tokenization()
+
+    # do pos tagging
+    result = []
+    for tweet in list_tweets:
+        tweet_id, text = tweet[0], tweet[1]
+
+        if len(text) == 0:
+            tid_text = [tweet_id, text]
+            result.append(tid_text)
+        else:
+            out = tokenize.sentence_extraction(tokenize.cleaning(text))
+            join_word = []
+            for o in out:
+                strtag = " ".join(tokenize.tokenisasi_kalimat(o)).strip()
+                join_word += [" ".join(tagger.taggingStr(strtag))]
+            tid_text = [tweet_id, join_word]
+            result.append(tid_text)
+
+    # insert into table preprocess
+    for tweet in result:
+        tweet_id, text = tweet[0], tweet[1]
+        tweet_str = ''.join(text)
+
+        tb_postag = PosTag()
+        tb_postag.text = tweet_str
+        tb_postag.tweet_id = tweet_id
+        db.session.add(tb_postag)
+        db.session.commit()
+
+    return jsonify(status_pos_tagging="success")
