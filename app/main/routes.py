@@ -18,27 +18,6 @@ def index():
     return render_template('index.html', tweets=tweets)
 
 
-@bp.route('/stories', methods=['GET', 'POST'])
-def stories():
-    test = Test.query.order_by(Test.id.desc()).all()
-    return render_template("stories.html", test=test)
-
-
-@bp.route('/stories/<int:id>', methods=['GET', 'POST'])
-def story(id):
-    grammar_story = GrammarStory.query.filter_by(test_id=id)
-
-    # store data in dictionary
-    dict_story = defaultdict(list)
-    for data in grammar_story:
-        dict_story[data.topic].append(data.sentence)
-
-    # topic
-    topic = list(dict_story.keys())
-
-    return render_template("story.html", test_id=id, topic=topic)
-
-
 @bp.route('/process', methods=['GET', 'POST'])
 def process():
     return render_template("process.html")
@@ -304,3 +283,37 @@ def grammar():
             db.session.commit()
 
     return jsonify(status_grammar="success")
+
+
+@bp.route('/stories', methods=['GET', 'POST'])
+def stories():
+    test = Test.query.order_by(Test.id.desc()).all()
+    return render_template("stories.html", test=test)
+
+
+@bp.route('/stories/<int:id>', methods=['GET', 'POST'])
+def story(id):
+    grammar_story = GrammarStory.query.filter_by(test_id=id)
+
+    # store data in dictionary
+    dict_story = defaultdict(list)
+    for data in grammar_story:
+        dict_story[data.topic].append(data.sentence)
+
+    # topic
+    topic = list(dict_story.keys())
+
+    return render_template("story.html", test_id=id, topic=topic)
+
+
+@bp.route('/stories/<int:id>/get_story', methods=['GET', 'POST'])
+def get_story(id):
+    jsonData = request.get_json()
+    selected_topic = jsonData['selected_topic']
+    grammar_story = GrammarStory.query.filter_by(test_id=id, topic=selected_topic)
+
+    result = []
+    for data in grammar_story:
+        result.append(data.sentence)
+
+    return jsonify(grammar_story='. '.join(i.capitalize() for i in result))
