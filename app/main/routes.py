@@ -1,11 +1,13 @@
 from app import db
 from flask import current_app, render_template, request, jsonify
 import os
+from collections import defaultdict
 from app.main import bp
-from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas, LdaPWZ
+from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas, LdaPWZ, GrammarStory
 from ..modules.preprocess import Normalize, Tokenize, SymSpell
 from ..modules.hmmtagger import MainTagger, Tokenization
 from ..modules.lda import LdaModel
+from ..modules.grammar import CFG
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -257,3 +259,32 @@ def lda():
         return jsonify(status_lda="success")
     else:
         return jsonify(status_lda="failed")
+
+
+@bp.route('/process/grammar', methods=['GET', 'POST'])
+def grammar():
+    latest_test_id = (Test.query.order_by(Test.id.desc()).first()).id
+    ldapwz = LdaPWZ.query.filter_by(test_id=latest_test_id)
+
+    # get topic with words in dictionary
+    dict_ldapwz = defaultdict(list)
+    for data in ldapwz:
+        dict_ldapwz[data.topic].append(data.word)
+
+    # initialize
+    cfg = CFG()
+
+    # create sentence for story
+    dict_story = cfg.create_sentences_from_data(dict(dict_ldapwz))
+
+    # insert into table GrammarStory
+    for topic, list_sentence in dict_story.items():
+        for sentence in list_sentence:
+            tb_grammar_story = GrammarStory()
+            tb_grammar_story.topic = topic
+            tb_grammar_story.sentence = sentence
+            tb_grammar_story.test_id = latest_test_id
+            db.session.add(tb_grammar_story)
+            db.session.commit()
+
+    return jsonify(status_grammar="success")

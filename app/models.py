@@ -23,6 +23,7 @@ class Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     ldapwz = db.relationship('LdaPWZ', backref='test', lazy='dynamic')
+    grammar_story = db.relationship('GrammarStory', backref='test', lazy='dynamic')
 
     def __repr__(self):
         return '<Test {}>'.format(self.name)
@@ -69,3 +70,14 @@ class LdaPWZ(db.Model):
 
     def __repr__(self):
         return '<LdaPWZ {} {} {}>'.format(self.word, self.topic, self.pwz)
+
+
+class GrammarStory(db.Model):
+    __tablename__ = 'grammar_story'
+    id = db.Column(db.Integer, primary_key=True)
+    topic = db.Column(db.Integer)
+    sentence = db.Column(db.String(1000))
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
+
+    def __repr__(self):
+        return '<GrammarStory {} {}>'.format(self.topic, self.sentence)
