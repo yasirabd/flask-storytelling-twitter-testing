@@ -4,6 +4,26 @@
 Storytelling Twitter Pengujian
 {% endblock %}
 
+{% block head %}
+{{super()}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<style>
+  body {
+      position: relative;
+  }
+  .affix {
+      top: 70px;
+      z-index: 9999 !important;
+  }
+</style>
+{% endblock %}
+
 {% block navbar %}
 <nav class="navbar navbar-default">
   <div class="container">
@@ -30,25 +50,35 @@ Storytelling Twitter Pengujian
   <h3>Pilih Story</h3>
   <div class="row">
     <div class="col-md-6">
-      <table class="table table-stripped">
+      <table class="table table-stripped" id="tableTest">
         <thead>
-          <th>No</th>
-          <th>Waktu</th>
-          <th>Action</th>
+          <tr>
+            <th>No</th>
+            <th>Waktu</th>
+            <th>Action</th>
+          </tr>
         </thead>
-        {% set ns = namespace(i=1) %}
-        {% for item in test %}
         <tbody>
+          {% set ns = namespace(i=1) %}
+          {% for item in test %}
           <tr>
             <td>{{ ns.i }}</td>
             <td>{{ item.name }}</td>
             <td><a class="btn btn-primary" href="{{ url_for('main.story', id=item.id)}}">Lihat Story</a></td>
           </tr>
           {% set ns.i = ns.i+1 %}
+          {% endfor %}
         </tbody>
-        {% endfor %}
       </table>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $('#tableTest').DataTable();
+});
+</script>
 {% endblock %}
