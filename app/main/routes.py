@@ -20,7 +20,23 @@ def index():
 
 @bp.route('/stories', methods=['GET', 'POST'])
 def stories():
-    return render_template("stories.html")
+    test = Test.query.order_by(Test.id.desc()).all()
+    return render_template("stories.html", test=test)
+
+
+@bp.route('/stories/<int:id>', methods=['GET', 'POST'])
+def story(id):
+    grammar_story = GrammarStory.query.filter_by(test_id=id)
+
+    # store data in dictionary
+    dict_story = defaultdict(list)
+    for data in grammar_story:
+        dict_story[data.topic].append(data.sentence)
+
+    # topic
+    topic = list(dict_story.keys())
+
+    return render_template("story.html", test_id=id, topic=topic)
 
 
 @bp.route('/process', methods=['GET', 'POST'])
