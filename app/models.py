@@ -21,7 +21,7 @@ class Tweet(db.Model):
 class Test(db.Model):
     __tablename__ = 'test'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    name = db.Column(db.String(200))
     ldapwz = db.relationship('LdaPWZ', backref='test', lazy='dynamic')
     grammar_story = db.relationship('GrammarStory', backref='test', lazy='dynamic')
 
