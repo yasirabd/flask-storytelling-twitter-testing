@@ -47,7 +47,7 @@ Storytelling Twitter
         <li><a href="#crawling">1. Observe Data <span id="stat_observe_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#preprocessing">2. Preprocessing <span style="display:none" id="stat_preprocessing_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#tagging">3. POS Tagging <span style="display: none;" id="stat_pos_tagging_sidebar" class="text-danger">(Belum)</span></a></li>
-        <li><a href="#penentuan_kelas">4. Penentuan Kelas <span id="stat_penentuan_kelas_sidebar" class="text-danger">(Belum)</span></a></li>
+        <li><a href="#penentuan_kelas">4. Penentuan Kelas <span style="display: none;" id="stat_penentuan_kelas_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#lda">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#grammar">6. Grammar Story <span id="stat_grammar_sidebar" class="text-danger">(Belum)</span></a></li>
         <li><a href="#final">7. Final Result <span id="stat_final_sidebar" class="text-danger">(Belum)</span></a></li>
@@ -367,8 +367,74 @@ Storytelling Twitter
         <p class="code"><small><span id="status_pos_tagging"></span></small></p>
       </p>
       <hr>
-      <h2 id="penentuan_kelas" class="anchor">4. Penentuan Kelas <span id="stat_penentuan_kelas_header" class="text-danger">(Belum)</span></h2>
-
+      <h2 id="penentuan_kelas" class="anchor">4. Penentuan Kelas <span style="display: none;" id="stat_penentuan_kelas_header" class="text-danger">(Belum)</span></h2>
+      <p>
+        Setelah dilakukan <i>tagging</i>, kata-kata yang memiliki <i>tag</i> seperti berikut yang dilakukan pencarian topik:
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>POS</th>
+              <th>POS Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>JJ</td>
+              <td>Adjective</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>NN</td>
+              <td>Common Noun</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>NNP</td>
+              <td>Proper Noun</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>NNG</td>
+              <td>Genitive Noun</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>VBI</td>
+              <td>Intransitive Verb</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>VBT</td>
+              <td>Transitive Verb</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Sehingga kata-kata dapat dikategorikan menjadi 2 kelas, yaitu <b>Kelas Content</b> dan <b>Kelas Function</b>.
+        </p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Kelas</th>
+              <th>Tag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Content</td>
+              <td>JJ, NN, NNP, NNG, VBI, VBT</td>
+            </tr>
+            <tr>
+              <td>Function</td>
+              <td>OP, CP, GM, ';', ':', '"', '.', ',', '-', '...', RB, IN, MD, CC, SC, DT, UH, CDO, CDC, CDP, CDI, PRP, WP, PRN, PRL, NEG, SYM, RP, FW</td>
+            </tr>
+          </tbody>
+        </table>
+        <button style="display: none;" type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Proses Penentuan Kelas" id="btnPenentuanKelas">Lakukan Penentuan Kelas</button>
+        <p class="code"><small><span id="status_penentuan_kelas"></span></small></p>
+      </p>
       <hr>
       <h2 id="lda" class="anchor">5. Latent Dirichlet Allocation (LDA) <span id="stat_lda_header" class="text-danger">(Belum)</span></h2>
 
@@ -469,5 +535,34 @@ function doPosTaggingShow(data) {
   }, 0);
 }
 $('#btnPosTagging').click(doPosTagging)
+
+// javascript for penentuan kelas
+function gantiStatusKelas() {
+  var stat_kelas_sidebar =  document.getElementById("stat_penentuan_kelas_sidebar");
+  var stat_kelas_header = document.getElementById("stat_penentuan_kelas_header");
+  stat_kelas_sidebar.innerHTML = "(Sudah)";
+  stat_kelas_sidebar.style.color = "green";
+  stat_kelas_header.innerHTML = "(Sudah)";
+  stat_kelas_header.style.color = "green";
+}
+function doPenentuanKelas(ev){
+  ev.preventDefault();
+  $("#btnPenentuanKelas").button('loading');
+  $.ajax({
+    method: 'POST',
+    url: {{ url_for('main.penentuan_kelas')|tojson }},
+    timeout: 0,
+    data: $(this).serialize(),
+  }).done(doPenentuanKelasShow);
+}
+function doPenentuanKelasShow(data) {
+  $('#status_penentuan_kelas').text(data.status_penentuan_kelas);
+  gantiStatusKelas();
+  $("#btnPenentuanKelas").button('reset');
+  setTimeout(function () {
+    $("#btnPenentuanKelas").prop("disabled", true);
+  }, 0);
+}
+$('#btnPenentuanKelas').click(doPenentuanKelas)
 </script>
 {% endblock %}

@@ -2,7 +2,7 @@ from app import db
 from flask import current_app, render_template, request, jsonify
 import os
 from app.main import bp
-from app.models import Tweet, Test, Preprocess, PosTag
+from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas
 from ..modules.preprocess import Normalize, Tokenize, SymSpell
 from ..modules.hmmtagger import MainTagger, Tokenization
 
@@ -152,3 +152,61 @@ def pos_tagging():
         db.session.commit()
 
     return jsonify(status_pos_tagging="success")
+
+
+@bp.route('/process/penentuan_kelas', methods=['GET', 'POST'])
+def penentuan_kelas():
+    Ccon = ['JJ', 'NN','NNP', 'NNG', 'VBI', 'VBT']
+    Cfunc = ['OP', 'CP', 'GM', ';', ':', '"', '.',
+             ',', '-', '...', 'RB', 'IN', 'MD', 'CC',
+             'SC', 'DT', 'UH', 'CDO', 'CDC', 'CDP', 'CDI',
+             'PRP', 'WP', 'PRN', 'PRL', 'NEG', 'SYM', 'RP', 'FW']
+
+    tweets_tagged = PosTag.query.all()
+
+    # get text from table PostTag
+    list_tweets = []
+    for t in tweets_tagged:
+        tid_tweet = [t.tweet_id, t.text]
+        list_tweets.append(tid_tweet)
+
+    # do penentuan kelas
+    result = []
+    for tweet in list_tweets:
+        tweet_id, text = tweet[0], tweet[1]
+
+        if len(text) > 0:
+            text_split = text.split(' ')
+
+            doc_complete = {"con": [], "func": []}
+            con = []
+            func = []
+
+            for word in text_split:
+                w = word.split('/', 1)[0]
+                tag = word.split('/', 1)[1]
+                if tag in Ccon:
+                    con.append(word)
+                elif tag in Cfunc:
+                    func.append(word)
+            doc_complete["con"].append(' '.join(con))
+            doc_complete["func"].append(' '.join(func))
+        else:
+            doc_complete["con"].append(text)
+            doc_complete["func"].append(text)
+
+        result.append([tweet_id, doc_complete])
+
+    # insert into table penentuan kelas
+    for tweet in result:
+        tweet_id, text = tweet[0], tweet[1]
+        content, function = ''.join(text["con"]), ''.join(text["func"])
+
+        tb_penentuan_kelas = PenentuanKelas()
+        tb_penentuan_kelas.content = content
+        tb_penentuan_kelas.function = function
+        tb_penentuan_kelas.tweet_id = tweet_id
+        db.session.add(tb_penentuan_kelas)
+        db.session.commit()
+
+    return jsonify(status_penentuan_kelas="success")
