@@ -2,7 +2,7 @@ from collections import OrderedDict, defaultdict
 import re, random
 
 
-NP = ['_NN', '_NNP', '_NNG', '_NN _DT', '_NN _JJP', '_NNP _JJP', '_NP _CC _NP']
+NP = ['_NN', '_NNP', '_NNG', '_NN _JJP', '_NNP _JJP', '_NP _CC _NP']
 VP = ['_VBT _NP', '_VBT _NP _PP', '_VBI', '_VBI _PP', '_PP', '_JJP']
 
 class CFG():
@@ -139,7 +139,14 @@ class CFG():
         """
         result = {}
         S = {"_S": ["_NP _VP"]}
-        PP = {"_PP": ["_IN _NP"]}
+        # PP = {"_PP": ["_IN _NP"]}
+        if '_NN' and '_NNP' in list_tag:
+            PP = {"_PP": ['_IN _NN', '_IN _NNP']}
+        elif '_NN' in list_tag and '_NNP' not in list_tag:
+            PP = {"_PP": ["_IN _NN"]}
+        elif '_NN' not in list_tag and '_NNP' in list_tag:
+            PP = {"_PP": ["_IN _NNP"]}
+
         if '_JJ' in list_tag:
             NP_RULES = ['_NP _CC _NP'] + self.generate_NP(list_tag)
             NP = {"_NP": NP_RULES}
@@ -148,7 +155,7 @@ class CFG():
                 VP = {"_VP": VP_RULES}
             else:
                 VP = {"_VP": ['_PP', '_JJP']}
-            JJP = {"_JJP": ['_JJ', '_JJ _CC _JJ']}
+            JJP = {"_JJP": ['_JJ']}
 
             for r in [S, NP, VP, PP, JJP]:
                 result.update(r)
@@ -230,9 +237,9 @@ class CFG():
         """
         result = {}
         IN = {"_IN": ['di', 'ke', 'dari']}
-        DT = {"_DT": ['ini', 'itu']}
+        # DT = {"_DT": ['ini', 'itu']}
         CC = {"_CC": ['dan', 'atau']}
         WORDS = dict_words_by_tag
-        for r in [IN, DT, CC, WORDS]:
+        for r in [IN, CC, WORDS]:
             result.update(r)
         return result
