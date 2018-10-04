@@ -86,6 +86,9 @@ def preprocess():
                 temp.append(token)
         tweet_prepared = ' '.join(temp)
 
+        # join attraction with strip
+        tweet_prepared = normalizer.join_attraction(tweet_prepared)
+
         id_tweet_prepared = [id, tweet_prepared]
         result.append(id_tweet_prepared)
 
