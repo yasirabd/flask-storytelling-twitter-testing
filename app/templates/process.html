@@ -96,20 +96,19 @@ Storytelling Twitter Pengujian
           <li class="list-group-item">
             <h4>Common Preprocessing</h4>
             <ul>
-              <li>Remove ASCII and Unicode</li>
-              <li>Tokenization <code>Saya makan -> 'Saya', 'makan'</code></li>
-              <li>Case folding, convert into lowercase <code>Saya -> saya</code></li>
-              <li>Remove punctuation <code>!?%^., etc</code></li>
-              <li>Remove newline</li>
+              <li>Menghapus Karakter Non-ASCII and Unicode <code>contoh: Ð±§•¿µ</code></li>
+              <li>Tokenisasi <code>contoh: Saya makan -> 'Saya', 'makan'</code></li>
+              <li><i>Case folding</i>, merubah huruf menjadi lowercase <code>contoh: Saya -> saya</code></li>
+              <li>Menghapus tanda baca <code>contoh: !?%^.,</code></li>
             </ul>
           </li>
           <li class="list-group-item">
             <h4>Specific Preprocessing</h4>
             <ul>
-              <li>Remove special symbols on Twitter <code>hashtag(#), mention(@username), RT, and FAV</code></li>
-              <li>Remove all emoticons</li>
-              <li>Remove URL</li>
-              <li>Spelling checker using <i>symspell</i></li>
+              <li>Menghapus Simbol-Simbol Twitter <code>contoh: hashtag(#), mention(@username), RT, and FAV</code></li>
+              <li>Menghapus <i>emoticons</i> <code>contoh: 😂</code></li>
+              <li>Menghapus URL <code>contoh: http://bit.ly/2ha3OR5</code></li>
+              <li><i>Spell Check</i> dengan SymSpell <code>contoh: brarti -> berarti</code></li>
             </ul>
           </li>
         </ol>
