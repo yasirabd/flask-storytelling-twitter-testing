@@ -3,7 +3,7 @@ import string
 import numpy as np
 
 character = ['.',',',';',':','-,','...','?','!','(',')','[',']','{','}','<','>','"','/','\'','#','-','@']
-
+attractions = ['lawang sewu']
 
 class Normalize():
 
