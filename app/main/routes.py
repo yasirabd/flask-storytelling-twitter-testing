@@ -319,7 +319,7 @@ def story(id):
     # store data in dictionary
     dict_story = defaultdict(list)
     for data in grammar_story:
-        dict_story[data.topic].append(data.sentence)
+        dict_story[data.topic].append(data.story)
 
     # topic
     topic = list(dict_story.keys())
@@ -335,9 +335,9 @@ def get_story(id):
 
     result = []
     for data in grammar_story:
-        result.append(data.sentence)
+        result.append(data.story)
 
-    return jsonify(grammar_story='. '.join(i.capitalize() for i in result))
+    return jsonify(grammar_story=' NEWLINE '.join(result))
 
 
 @bp.route('/stories/<int:id>/details/data', methods=['GET', 'POST'])
