@@ -267,7 +267,7 @@ def grammar():
     # get topic with words in dictionary
     dict_ldapwz = defaultdict(list)
     for data in ldapwz:
-        dict_ldapwz[data.topic].append(data.word)
+        dict_ldapwz[data.topic].append([data.word, data.pwz])
 
     # initialize
     cfg = CFG()
