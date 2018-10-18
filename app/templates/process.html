@@ -473,7 +473,7 @@ Storytelling Twitter Pengujian
       <h2 id="grammar" class="anchor">6. Grammar Story <span id="stat_grammar_header" class="text-danger">(Belum)</h2>
       <p>
         <p style="text-align:justify">
-          Penyusunan kata-kata yang memiliki <i>tag</i> pada tiap topik, menggunakan Context-free Grammar (CFG). CFG adalah jenis tata bahasa formal tertentu
+          Penyusunan kata-kata yang memiliki <i>tag</i> pada tiap topik, menggunakan Context-Free Grammar (CFG). CFG adalah jenis tata bahasa formal tertentu
           dan berisi sekumpulan <i>production rules</i> yang menggambarkan semua kemungkinan susunan kata tersebut. Dalam penelitian ini menggunakan bahasa Indonesia.
           Berikut adalah contoh penerapan CFG:
         </p>
@@ -489,29 +489,74 @@ Storytelling Twitter Pengujian
         JJ  -> 'gemuk' | 'kurus'
         DT  -> 'ini' | 'itu'
         IN  -> 'di' | 'ke' | 'dari'
-        CC  -> 'dan' | 'atau'</code>
-
-        Possible Output:<samp>
-        manusia kurus melihat kambing gemuk dan kurus</samp></pre>
+        CC  -> 'dan' | 'atau'</code></pre>
+        <p>
+          Berikut ini adalah hasil keluaran yang dapat dihasilkan:
+        </p>
+        <table class="table table-bordered">
+          <tr>
+            <td>S</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>NP</td>
+            <td>VP</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>NN</td>
+            <td>VBT</td>
+            <td>NP</td>
+          </tr>
+          <tr>
+            <td>manusia</td>
+            <td>melihat</td>
+            <td>NN</td>
+          </tr>
+          <tr>
+            <td>manusia</td>
+            <td>melihat</td>
+            <td>kambing</td>
+          </tr>
+        </table>
         <p style="text-align:justify">
-          Dalam penerapan CFG, berikut adalah <i>Production Rules</i> yang diterapkan:
+          Dalam penerapan CFG, berikut ini 2 <i>Grammar Rules</i> yang diterapkan:
         </p>
         <pre>
-        Grammar Production Rules<code>
+        Grammar Production Rules Informasi<code>
         S   -> NP VP
-        NP  -> NN | NNP | NNG | NN DT | NN JJP | NNP JJP | NP CC NP
-        VP  -> VBT NP | VBT NP PP | VBI | VBI PP | VBI JJP | PP | JJP
-        PP  -> IN NP
-        JJP -> JJ | JJ CC JJ
-        NN  -> *set of words*
-        NNP -> *set of words*
-        NNG -> *set of words*
-        VBI -> *set of words*
-        VBT -> *set of words*
-        JJ  -> *set of words*
-        CC  -> 'dan' | 'atau'
-        IN  -> 'di' | 'ke' | 'dari'
-        DT  -> 'ini' | 'itu'</code></pre>
+        NP  -> NN | NNP | NNG
+        VP  -> VBT NN | VBT NN NN | VBT NN CC NN | VBT NN PP | VBT NN SC | VBT PP |
+               VBI PP | VBI JJ | SC JJ VBI NN | JJ | SC JJ | PP NN | PP
+        PP  -> IN NN
+        NN  -> *input kata-kata*
+        NNP -> *input kata-kata*
+        NNG -> *input kata-kata*
+        VBI -> ada | + *input kata-kata*
+        VBT -> memiliki | adalah | merupakan | mempunyai | + *input kata-kata*
+        JJ  -> *input kata-kata*
+        CC  -> dan
+        IN  -> di
+        SC  -> yang</code></pre>
+        <pre>
+        Grammar Production Rules Cerita/Opini<code>
+        S   -> NP VP
+        NP  -> PRP | NN | NN NN | NN DT | NNP | NNG
+        VP  -> VBT NN | VBT NN NN | VBT PP NN | RB VBT | RB VBT PP | VBI |
+               VBI NN | VBI SC JJ | SC VBI | VBT PP SC VBI | PP
+        PP  -> IN NN
+        PRP -> aku
+        NN  -> *input kata-kata*
+        NNP -> *input kata-kata*
+        NNG -> *input kata-kata*
+        VBI -> ada | + *input kata-kata*
+        VBT -> ingin | + *input kata-kata*
+        JJ  -> *input kata-kata*
+        CC  -> dan
+        IN  -> di | dengan | ke
+        RB  -> sedang | sambil | masih | lagi
+        SC  -> yang</code></pre>
         <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Proses Penyusunan Kalimat" id="btnGrammar">Lakukan Penyusunan Kalimat</button>
         <p class="code"><small><span id="status_grammar"></span></small></p>
       </p>
@@ -519,7 +564,7 @@ Storytelling Twitter Pengujian
       <h2 id="final" class="anchor">7. Final Result</h2>
       <p>
         <p>
-          Selamat! Anda telah selesai melalui proses pembentukan <i>story</i> tiap topik dari data Twitter.
+          Anda telah selesai melalui proses pembentukan <i>story</i> tiap topik dari data Twitter.
         </p>
         <a href="{{url_for('main.stories')}}" class="btn btn-success" id="btnFinal">Lihat Hasil Akhir</a>
       </p>
