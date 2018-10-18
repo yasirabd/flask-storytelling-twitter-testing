@@ -76,7 +76,8 @@ class GrammarStory(db.Model):
     __tablename__ = 'grammar_story'
     id = db.Column(db.Integer, primary_key=True)
     topic = db.Column(db.Integer)
-    sentence = db.Column(db.String(1000))
+    rules = db.Column(db.String(25))
+    story = db.Column(db.String(10000))
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
 
     def __repr__(self):
