@@ -1,6 +1,7 @@
 from app import db
 from flask import current_app, render_template, request, jsonify
 import os
+import time
 from collections import defaultdict
 from app.main import bp
 from app.models import Tweet, Test, Preprocess, PosTag, PenentuanKelas, LdaPWZ, GrammarStory
@@ -33,9 +34,9 @@ def test():
         db.session.add(tb_test)
         db.session.commit()
 
-        return jsonify(status_observe="success")
+        return jsonify(status_observe="penyimpanan project telah berhasil!")
     else:
-        return jsonify(status_observe="failed")
+        return jsonify(status_observe="penyimpanan project gagal!")
 
 
 @bp.route('/process/preprocess', methods=['GET', 'POST'])
@@ -102,7 +103,7 @@ def preprocess():
         db.session.add(tb_preprocess)
         db.session.commit()
 
-    return jsonify(status_preprocessing="success")
+    return jsonify(status_preprocessing="proses preprocessing telah selesai!")
 
 
 @bp.route('/process/pos_tagging', methods=['GET', 'POST'])
@@ -152,7 +153,7 @@ def pos_tagging():
         db.session.add(tb_postag)
         db.session.commit()
 
-    return jsonify(status_pos_tagging="success")
+    return jsonify(status_pos_tagging="proses pos tagging telah selesai!")
 
 
 @bp.route('/process/penentuan_kelas', methods=['GET', 'POST'])
@@ -210,7 +211,7 @@ def penentuan_kelas():
         db.session.add(tb_penentuan_kelas)
         db.session.commit()
 
-    return jsonify(status_penentuan_kelas="success")
+    return jsonify(status_penentuan_kelas="proses penentuan kelas telah selesai!")
 
 
 @bp.route('/process/lda', methods=['GET', 'POST'])
@@ -254,9 +255,9 @@ def lda():
             db.session.add(tb_ldapwz)
             db.session.commit()
 
-        return jsonify(status_lda="success")
+        return jsonify(status_lda="proses lda telah selesai!")
     else:
-        return jsonify(status_lda="failed")
+        return jsonify(status_lda="proses lda gagal!")
 
 
 @bp.route('/process/grammar', methods=['GET', 'POST'])
@@ -303,7 +304,7 @@ def grammar():
         db.session.add(tb_grammar_story)
         db.session.commit()
 
-    return jsonify(status_grammar="success")
+    return jsonify(status_grammar="proses grammar story telah selesai!")
 
 
 @bp.route('/stories', methods=['GET', 'POST'])
