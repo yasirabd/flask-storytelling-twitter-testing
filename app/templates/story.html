@@ -52,11 +52,15 @@ Storytelling Twitter Pengujian
         </select>
       </div>
       <a href="{{url_for('main.get_data', id=test_id)}}" class="btn btn-primary btn-block"><i class="fa fa-info-circle"></i> Details</a>
-      <button class="btn btn-success btn-block"><i class="fa fa-download"></i> Export All Story</button>
+      <!-- <button class="btn btn-success btn-block"><i class="fa fa-download"></i> Export All Story</button> -->
     </div>
     <div class="col-md-10">
       <span hidden id="testId">{{ test_id }}</span>
-      <p style="text-align:justify" id="story"></p>
+      <h4>Rules Informasi</h4>
+      <p style="text-align:justify" id="story_informasi">-</p>
+      <br/>
+      <h4>Rules Cerita</h4>
+      <p style="text-align:justify" id="story_cerita">-</p>
     </div>
   </div>
 </div>
@@ -73,7 +77,9 @@ $('#selectTopic').change(function() {
     contentType: 'application/json',
     data: JSON.stringify({'selected_topic': $('#selectTopic').val()}),
     success: function(data) {
-      $('#story').text(data.grammar_story);
+      console.log(JSON.stringify(data))
+      $('#story_informasi').text(data.result_informasi);
+      $('#story_cerita').text(data.result_cerita);
     },
     error: function(result){
          console.log(result);

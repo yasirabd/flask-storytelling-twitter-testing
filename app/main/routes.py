@@ -333,11 +333,15 @@ def get_story(id):
     selected_topic = jsonData['selected_topic']
     grammar_story = GrammarStory.query.filter_by(test_id=id, topic=selected_topic)
 
-    result = []
+    result_informasi = []
+    result_cerita = []
     for data in grammar_story:
-        result.append(data.story)
+        if data.rules == 'informasi':
+            result_informasi.append(data.story)
+        elif data.rules == 'cerita':
+            result_cerita.append(data.story)
 
-    return jsonify(grammar_story=' NEWLINE '.join(result))
+    return jsonify(result_informasi=''.join(result_informasi), result_cerita=''.join(result_cerita))
 
 
 @bp.route('/stories/<int:id>/details/data', methods=['GET', 'POST'])
