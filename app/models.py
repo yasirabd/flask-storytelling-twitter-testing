@@ -81,4 +81,4 @@ class GrammarStory(db.Model):
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
 
     def __repr__(self):
-        return '<GrammarStory {} {}>'.format(self.topic, self.sentence)
+        return '<GrammarStory {} {}>'.format(self.topic, self.story)
